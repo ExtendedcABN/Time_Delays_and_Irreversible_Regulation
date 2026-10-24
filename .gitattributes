@@ -1,0 +1,19 @@
+# Cross-platform line endings (Linux, macOS, Windows, Docker).
+* text=auto
+
+*.sh text eol=lf
+*.bash text eol=lf
+Dockerfile text eol=lf
+.dockerignore text eol=lf
+.gitattributes text eol=lf
+.gitignore text eol=lf
+
+*.py text eol=lf
+*.txt text eol=lf
+*.json text eol=lf
+*.md text eol=lf
+*.bnet text eol=lf
+
+*.png binary
+*.jpg binary
+*.jpeg binary

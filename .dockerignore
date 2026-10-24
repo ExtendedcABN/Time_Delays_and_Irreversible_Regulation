@@ -1,0 +1,12 @@
+.git
+.venv
+__pycache__
+**/__pycache__
+*.py[cod]
+logs
+logs_original
+logs_docker
+results
+results_docker
+*.log
+.env
