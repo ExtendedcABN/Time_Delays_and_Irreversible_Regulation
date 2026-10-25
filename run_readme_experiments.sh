@@ -49,8 +49,8 @@ record() {
 MODE="${1:-all}"
 
 if [[ "${MODE}" == "smoke" ]]; then
-  record "smoke_abstract" "${SCRIPT}" "${RUN_ARGS[@]}" --model_name "abstract"
-else
+  record "smoke_id-133" "${SCRIPT}" "${RUN_ARGS[@]}" --model_name "id-133"
+elif [[ "${MODE}" == "all" ]]; then
   record "T1_id-133" "${SCRIPT}" "${RUN_ARGS[@]}" --model_name "id-133"
   record "T1_id-015" "${SCRIPT}" "${RUN_ARGS[@]}" --model_name "id-015"
   record "T1_id-111" "${SCRIPT}" "${RUN_ARGS[@]}" --model_name "id-111"
@@ -58,6 +58,10 @@ else
   record "VE_id-035" "${SCRIPT}" "${RUN_ARGS[@]}" --model_name "id-035"
   record "VE_abstract" "${SCRIPT}" "${RUN_ARGS[@]}" --model_name "abstract"
   record "Sea_Urchin" "${SCRIPT}" "${RUN_ARGS[@]}" --model_name "Sea Urchin"
+elif [[ "${MODE}" == "id-133" || "${MODE}" == "id-015" || "${MODE}" == "id-111" || "${MODE}" == "id-230" || "${MODE}" == "id-035" || "${MODE}" == "abstract" || "${MODE}" == "Sea Urchin" ]]; then
+  record "single_${MODE}" "${SCRIPT}" "${RUN_ARGS[@]}" --model_name "${MODE}"
+else
+  exec "$@"
 fi
 
 echo "Done. Logs in ${LOG_DIR}/ (*.log)"
