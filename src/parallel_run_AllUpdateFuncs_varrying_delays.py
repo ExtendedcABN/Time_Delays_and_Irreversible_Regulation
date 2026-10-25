@@ -179,14 +179,15 @@ class ParallelCABN_Synthesis:
                             
                         self.solver.add(self.q[exp_id][n][target] == final_condition)
 
-    def run(self, max_solutions=100):
+    def run(self, max_solutions=100, results_dir="results"):
             total_permutations = 0
             all_permutations = []
             all_trajectories = []
             proven_rules = []  # Added to collect rules
 
             print(f"Executing Dynamic Delay Search (Max Solutions: {max_solutions})")
-            smt_dump_path = os.path.join("Results_BBM", "smt_constraints_dump.txt")
+            os.makedirs(results_dir, exist_ok=True)
+            smt_dump_path = os.path.join(results_dir, "smt_constraints_dump.txt")
             self.print_solver_constraints(output_path=smt_dump_path, print_to_console=False)
             start_time = time.time()
 
@@ -415,27 +416,52 @@ def load_delays_from_rich_config(json_path):
 def get_delay(src, tgt, edge_delays, def_min=1, def_max=2):
     return edge_delays.get((src, tgt), (def_min, def_max))
 
+def model_folder_matches(model_folder_name, model_name, exact):
+    if not model_name:
+        return True
+    if exact:
+        return model_folder_name == model_name
+    return model_name in model_folder_name
+
+def resolve_observation_path(model_dir, model_folder_name, obs_dir=None):
+    if obs_dir:
+        legacy = os.path.join(obs_dir, f"{model_folder_name}.json")
+        if os.path.exists(legacy):
+            return legacy
+    preferred = os.path.join(model_dir, f"{model_folder_name}.json")
+    if os.path.exists(preferred):
+        return preferred
+    sea_urchin = os.path.join(model_dir, "sea_urchin_model.json")
+    if os.path.exists(sea_urchin):
+        return sea_urchin
+    for fn in sorted(os.listdir(model_dir)):
+        if fn.endswith(".json") and fn != "config.json":
+            return os.path.join(model_dir, fn)
+    return None
+
 # ==============================================================================
 # MAIN EXECUTION PIPELINE
 # ==============================================================================
 
 if __name__ == "__main__":
-    print("Starting execution...")
+    print("Starting execution...", flush=True)
     parser = argparse.ArgumentParser()
     parser.add_argument("--config_file", type=str, default=None)
-    parser.add_argument("--models_dir", type=str, default="test_models_BBM")
+    parser.add_argument("--models_dir", type=str, default="benchmarks")
     parser.add_argument("--model_file", type=str, default="model.bnet")
     parser.add_argument("--model_name", type=str, default=None)
-    parser.add_argument("--obs_dir", type=str, default="observations_BBM")
-    parser.add_argument("--results_dir", type=str, default="Results_BBM")
+    parser.add_argument("--exact_model_name", action="store_true")
+    parser.add_argument("--obs_dir", type=str, default=None,
+                        help="Optional legacy folder for observation JSON (default: each benchmark folder)")
+    parser.add_argument("--results_dir", type=str, default="results")
 
-    #args = parser.parse_args(['--models_dir', 'test_models_BBM', '--model_file', 'model.bnet','--model_name', '[id-230]__[var-50]__[in-5]__[HEPATOCYTE-GROWTH-FACTOR]', '--obs_dir', 'observations_BBM', '--results_dir', 'Results_BBM'])
-    args = parser.parse_args(['--models_dir', 'sea-urchin-embryo', '--model_file', 'model.bnet','--model_name', 'sea_urchin_model', '--obs_dir', 'observations_sea_urchin', '--results_dir', 'Results_BBM'])
+    args = parser.parse_args()
 
     models_to_process = []
     if args.models_dir and os.path.exists(args.models_dir):
         for model_folder_name in os.listdir(args.models_dir):
-            if args.model_name and model_folder_name != args.model_name: continue
+            if not model_folder_matches(model_folder_name, args.model_name, args.exact_model_name):
+                continue
             model_dir = os.path.join(args.models_dir, model_folder_name)
             if not os.path.isdir(model_dir): continue
             
@@ -506,10 +532,9 @@ if __name__ == "__main__":
                         if var not in z3_vars and var not in ["True", "False"]:
                             z3_vars[var] = BoolVal(False)
 
-        # Unified Single-File Observation Loader
-        obs_path = os.path.join(args.obs_dir, f"{model_folder_name}.json")
-        if not os.path.exists(obs_path): 
-            print(f"  [!] No observation file found at {obs_path}. Skipping...")
+        obs_path = resolve_observation_path(model_dir, model_folder_name, args.obs_dir)
+        if not obs_path:
+            print(f"  [!] No observation JSON found in {model_dir}. Skipping...", flush=True)
             continue
 
         with open(obs_path, 'r') as f:
@@ -570,7 +595,7 @@ if __name__ == "__main__":
             for t, comp, val in constraints:
                 sys.solver.add(sys.q[exp_id][t][comp] == val)
 
-        run_output = sys.run(max_solutions=10)
+        run_output = sys.run(max_solutions=10, results_dir=args.results_dir)
         
         all_permutations = run_output[0] if run_output else []
         all_trajectories = run_output[1] if run_output and len(run_output) > 1 else []

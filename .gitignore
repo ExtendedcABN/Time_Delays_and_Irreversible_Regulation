@@ -12,6 +12,8 @@ venv/
 
 # Generated benchmark results
 results/
+results_docker/
+logs_docker/
 
 # OS-generated files
 .DS_Store
