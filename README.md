@@ -132,7 +132,7 @@ docker run --rm `
   time-delays-artifact:latest
 ```
 
-- **Estimated Total Runtime**: ~30–40 minutes.
+- **Estimated Total Runtime**: ~10–20 minutes *(typically ~7–10 minutes on native modern CPUs; up to 15–20 minutes inside the TACAS VirtualBox VM).*
 - **Logs**: `logs_docker/*.log`
 - **Results**: `results_docker/<benchmark-folder>/`
 
@@ -232,8 +232,8 @@ Reviewers can also run and inspect any specific benchmark model independently by
 - **Log**: `logs_docker/single_Sea Urchin.log` (or `logs_docker/Sea_Urchin.log`)
 - **Results**: `results_docker/Sea Urchin Embryo/Relationships.txt`
 - **Estimated Runtime**:
-  - **Total Wall-Clock Time (End-to-End)**: ~20–30 minutes.
-  - **Internal Solver Runtime (Printed in output)**: ~15–30 seconds.
+  - **Total Wall-Clock Time (End-to-End)**: ~10–20 minutes *(~7 minutes on a native modern CPU; up to 15–20 minutes inside the VirtualBox evaluation VM).*
+  - **Internal Solver Runtime (Printed in output)**: ~10–30 seconds.
   > **Note on Wall-Clock Time vs. Reported Solver Runtime**:  
   > The `RUNTIME` recorded in `Relationships.txt` and the console logs measures only the **active SMT solving, model extraction, and hypothesis-proving phase** (the timer starts immediately prior to `solver.check()`). It does **not** include the initial constraint construction and formula-encoding phase in Python (parsing the configuration, unrolling multi-step dynamic delay trajectories, and formatting SMT constraints). While formula construction is instantaneous (< 1s) for smaller models, the high-dimensional `Sea Urchin Embryo` network requires several minutes of symbolic constraint construction before the Z3 solver search begins.
 
