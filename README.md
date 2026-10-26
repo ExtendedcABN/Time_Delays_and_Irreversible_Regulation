@@ -35,8 +35,21 @@ This artifact accompanies the paper submitted to TACAS (EasyChair Submission # 4
 
 ## Running the Code
 
-### Initial Build & Setup
-Always run these commands once, regardless of which test you want to run:
+### Step 1: Ensure the Docker Daemon is Running
+Before running any commands, make sure that the Docker service is running on your machine:
+- **Windows / macOS (Docker Desktop)**:
+  Launch the **Docker Desktop** application from your Start Menu / Applications folder and confirm that the status indicator in the bottom-left corner is green (**"Engine running"**).
+- **Linux / TACAS VirtualBox VM (Docker Engine via systemd)**:
+  Ensure the Docker service is active:
+  ```bash
+  sudo systemctl start docker
+  ```
+  *(Tip: To run Docker without `sudo`, ensure your user is in the docker group via `sudo usermod -aG docker $USER` and open a new terminal).*
+- **Quick Verification (All Platforms)**:
+  Run `docker info` or `docker ps` in your terminal. If it executes without connection errors, the Docker daemon is ready.
+
+### Step 2: Initial Build & Setup
+Always run these build and directory setup commands once, regardless of which test you want to run:
 
 **Linux / macOS:**
 
