@@ -58,7 +58,7 @@ elif [[ "${MODE}" == "all" ]]; then
   record "VE_id-035" "${SCRIPT}" "${RUN_ARGS[@]}" --model_name "id-035"
   record "VE_abstract" "${SCRIPT}" "${RUN_ARGS[@]}" --model_name "abstract"
   record "Sea_Urchin" "${SCRIPT}" "${RUN_ARGS[@]}" --model_name "Sea Urchin"
-elif [[ "${MODE}" == "id-133" || "${MODE}" == "id-015" || "${MODE}" == "id-111" || "${MODE}" == "id-230" || "${MODE}" == "id-035" || "${MODE}" == "abstract" || "${MODE}" == "Sea Urchin" ]]; then
+elif [[ -d "benchmarks/${MODE}" || "${MODE}" == "toy_example" || "${MODE}" == "id-133" || "${MODE}" == "id-015" || "${MODE}" == "id-111" || "${MODE}" == "id-230" || "${MODE}" == "id-035" || "${MODE}" == "abstract" || "${MODE}" == "Sea Urchin" ]]; then
   record "single_${MODE}" "${SCRIPT}" "${RUN_ARGS[@]}" --model_name "${MODE}"
 else
   exec "$@"

@@ -1,0 +1,4 @@
+targets,factors
+v_A, !v_C
+v_B, v_A
+v_C, v_B

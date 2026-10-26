@@ -1,0 +1,17 @@
+{
+    "model_id": "toy_example",
+    "observations": {
+        "time_series_trajectories": [
+            [
+                {"v_A": 0, "v_B": 0, "v_C": 0},
+                {"v_A": 1, "v_B": 0, "v_C": 0},
+                {"v_A": 1, "v_B": 1, "v_C": 0},
+                {"v_A": 1, "v_B": 1, "v_C": 1},
+                {"v_A": 0, "v_B": 1, "v_C": 1},
+                {"v_A": 0, "v_B": 0, "v_C": 1},
+                {"v_A": 0, "v_B": 0, "v_C": 0}
+            ]
+        ],
+        "steady_states": []
+    }
+}

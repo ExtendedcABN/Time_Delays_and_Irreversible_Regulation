@@ -1,0 +1,37 @@
+{
+    "num_steps": 10,
+    "time_resolution": 1,
+    "initialize_components_false": false,
+    "internal_components": [
+        "v_A",
+        "v_B",
+        "v_C"
+    ],
+    "external_inputs": [],
+    "interactions": [
+        {
+            "src": "v_C",
+            "tgt": "v_A",
+            "type": -1,
+            "d_min": 1,
+            "d_max": 2,
+            "definite": true
+        },
+        {
+            "src": "v_A",
+            "tgt": "v_B",
+            "type": 1,
+            "d_min": 1,
+            "d_max": 2,
+            "definite": true
+        },
+        {
+            "src": "v_B",
+            "tgt": "v_C",
+            "type": 1,
+            "d_min": 1,
+            "d_max": 2,
+            "definite": true
+        }
+    ]
+}
