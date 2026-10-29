@@ -8,7 +8,7 @@ This artifact accompanies the paper submitted to TACAS (EasyChair Submission # 4
 
 ### Hyperlink to Artifact
 - **GitHub Repository**: [https://github.com/ExtendedcABN/Time_Delays_and_Irreversible_Regulation](https://github.com/ExtendedcABN/Time_Delays_and_Irreversible_Regulation)
-- **Archival DOI (Zenodo)**: `https://doi.org/10.5281/zenodo.XXXXXXX`
+- **Archival DOI (Zenodo)**: [https://doi.org/10.5281/zenodo.23762195](https://doi.org/10.5281/zenodo.23762195)
 
 ### Badges Applied For
 - **Artifacts Available**: **Yes** (Archived with permanent identifier on Zenodo and public on GitHub).
